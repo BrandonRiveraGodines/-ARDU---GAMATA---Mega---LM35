@@ -81,7 +81,7 @@ void setup() {
   pinMode(IN6, OUTPUT);
   pinMode(IN7, OUTPUT);
   pinMode(IN8, OUTPUT);
-  
+
   pinMode(ON1, OUTPUT);
   pinMode(ON2, OUTPUT);
   pinMode(ON3, OUTPUT);
@@ -109,49 +109,51 @@ void setup() {
 
 void loop() {
   // leerDHTs();
-  if (comando.equals("subir")) {
-    Direction = false;
-    Direction2 = true;
-    motores();
-    comando = "";
-  }
+  if (stringComplete) {
+    if (comando.equals("subir")) {
+      Direction = false;
+      Direction2 = true;
+      motores();
+      comando = "";
+    }
 
-   else if (comando.equals("bajar")) {
-    Direction = true;
-    Direction2 = false;
-    motores();
-    comando = "";
-  }
+    else if (comando.equals("bajar")) {
+      Direction = true;
+      Direction2 = false;
+      motores();
+      comando = "";
+    }
 
-  else if (comando.equals("setear")) {
-    setTempHum();
-    comando = "";
-  }
+    else if (comando.equals("setear")) {
+      setTempHum();
+      comando = "";
+    }
 
-  else if (comando.equals("leerTempHum")) {
-    // leerDHTs();
-    leerLM();
-    comando = "";
-  }
+    else if (comando.equals("leerTempHum")) {
+      // leerDHTs();
+      leerLM();
+      comando = "";
+    }
 
-  else if (comando.equals("getLums")){
-    leerLums();
-    comando = "";
-  }
+    else if (comando.equals("getLums")) {
+      leerLums();
+      comando = "";
+    }
 
-  else if (comando.equals("regar")){
-    regar();
-    comando = "";
-  }
+    else if (comando.equals("regar")) {
+      regar();
+      comando = "";
+    }
 
-  else if (comando.equals("fertilizar")){
-    fertilizar();
-    comando = "";
-  }
+    else if (comando.equals("fertilizar")) {
+      fertilizar();
+      comando = "";
+    }
 
-  else if (comando.equals("activalm")){
-    leerLM();
-    comando = "";
+    else if (comando.equals("activalm")) {
+      leerLM();
+      comando = "";
+    }
   }
 }
 /*
@@ -196,7 +198,7 @@ void stepper3() {
   SetDirection2();
 }
 
-void stepper4(){
+void stepper4() {
   digitalWrite( ON5, Paso[Steps2][ 0] );
   digitalWrite( ON6, Paso[Steps2][ 1] );
   digitalWrite( ON7, Paso[Steps2][ 2] );
@@ -255,7 +257,7 @@ void leerDHTs() {
 
   Serial.println(t1);
   Serial.println(h1);
-  
+
   if (t1 >= temp) {
     Direction = true;
     Direction2 = false;
@@ -268,12 +270,12 @@ void leerDHTs() {
   }
 }
 /*
- * Terminan los codigos de DHT22
- */
+   Terminan los codigos de DHT22
+*/
 /*
- * Comienzan los codigos para luminocidad
- */
-void leerLums(){
+   Comienzan los codigos para luminocidad
+*/
+void leerLums() {
   //ilum = ((long)(1024-V)*ResOscu*10)/((long)ResLight*ResCalib*V); // Usar si LDR entre GND y A0
   //ilum = ((long)V*ResOscu*10)/((long)ResLight*ResCalib*(1024-V)); // Usar si LDR entre A0 y Vcc (como en el esquema anterior)
   ilum = analogRead(LDRPin);
@@ -281,35 +283,35 @@ void leerLums(){
   delay(1000);
 }
 /*
- * Terminan los codigos para luminocidad
- */
+   Terminan los codigos para luminocidad
+*/
 
- /*
-  * Comienzan los codigos para regar y fertilizar.
-  */
-void regar(){
+/*
+   Comienzan los codigos para regar y fertilizar.
+*/
+void regar() {
   digitalWrite(AguaPIN, HIGH);
   delay(4000);
   digitalWrite(AguaPIN, LOW);
   delay(200);
 }
 
-void fertilizar(){
+void fertilizar() {
   digitalWrite(FertPIN, HIGH);
   delay(4000);
   digitalWrite(FertPIN, LOW);
   delay(200);
 }
 /*
- * Terminan los codigos de rogar y fertilizar.
- */
+   Terminan los codigos de rogar y fertilizar.
+*/
 
 
-void serialEvent(){
-  while(Serial.available()){
+void serialEvent() {
+  while (Serial.available()) {
     char inChar = (char)Serial.read();
     if (inChar == '\r') continue;
-    if(inChar == '\n'){
+    if (inChar == '\n') {
       stringComplete = true;
     } else {
       comando += inChar;
@@ -317,11 +319,11 @@ void serialEvent(){
   }
 }
 
-void leerLM(){
+void leerLM() {
   int input = analogRead(LM35_PIN);    // Obtengo el valor sensado por el LM35
   float mv  = (1100 / 1024.0) * input; // Convierto el valor leido a mV (ahora el "tope" es de 1100mV)
   float cel = mv / 10;                 // Convierto los mV leidos a grados celsius
   Serial.println(cel);
-  delay(1000); 
+  delay(1000);
 }
 
