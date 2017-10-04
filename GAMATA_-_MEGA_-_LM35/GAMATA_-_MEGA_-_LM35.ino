@@ -76,10 +76,21 @@ void setup() {
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
+
+  pinMode(IN5, OUTPUT);
+  pinMode(IN6, OUTPUT);
+  pinMode(IN7, OUTPUT);
+  pinMode(IN8, OUTPUT);
+  
   pinMode(ON1, OUTPUT);
   pinMode(ON2, OUTPUT);
   pinMode(ON3, OUTPUT);
   pinMode(ON4, OUTPUT);
+
+  pinMode(ON5, OUTPUT);
+  pinMode(ON6, OUTPUT);
+  pinMode(ON7, OUTPUT);
+  pinMode(ON8, OUTPUT);
 
   // Setup necesario para los sensores DHT22
   dht_1.begin(); // Se inicia el sensor (1).
@@ -151,6 +162,8 @@ void motores() {
     while (steps_left > 0) {
       stepper();    // Avanza un paso
       stepper2();
+      stepper3();
+      stepper4();
       steps_left-- ;  // Un paso menos
       delay (1) ;
     }
@@ -172,6 +185,22 @@ void stepper2() {
   digitalWrite( ON2, Paso[Steps2][ 1] );
   digitalWrite( ON3, Paso[Steps2][ 2] );
   digitalWrite( ON4, Paso[Steps2][ 3] );
+  SetDirection2();
+}
+
+void stepper3() {
+  digitalWrite( IN5, Paso[Steps][ 0] );
+  digitalWrite( IN6, Paso[Steps][ 1] );
+  digitalWrite( IN7, Paso[Steps][ 2] );
+  digitalWrite( IN8, Paso[Steps][ 3] );
+  SetDirection();
+}
+
+void stepper4(){
+  digitalWrite( ON5, Paso[Steps2][ 0] );
+  digitalWrite( ON6, Paso[Steps2][ 1] );
+  digitalWrite( ON7, Paso[Steps2][ 2] );
+  digitalWrite( ON8, Paso[Steps2][ 3] );
   SetDirection2();
 }
 
