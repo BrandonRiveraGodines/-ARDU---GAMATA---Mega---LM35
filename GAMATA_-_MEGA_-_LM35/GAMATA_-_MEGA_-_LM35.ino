@@ -154,6 +154,7 @@ void loop() {
       leerLM();
       comando = "";
     }
+    leerLM();
   }
 }
 /*
