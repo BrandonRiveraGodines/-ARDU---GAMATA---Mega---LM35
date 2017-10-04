@@ -193,7 +193,7 @@ void stepper3() {
   digitalWrite( IN6, Paso[Steps][ 1] );
   digitalWrite( IN7, Paso[Steps][ 2] );
   digitalWrite( IN8, Paso[Steps][ 3] );
-  SetDirection();
+  SetDirection2();
 }
 
 void stepper4(){
