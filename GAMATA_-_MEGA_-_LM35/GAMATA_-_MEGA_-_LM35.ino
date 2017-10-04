@@ -1,12 +1,25 @@
 // Defines para los motores.
-#define IN1  53   // Pines para M1
-#define IN2  51   // Pines para M1
-#define IN3  49   // Pines para M1
-#define IN4  47   // Pines para M1
-#define ON1 45     // Pines para M2
-#define ON2 43     // Pines para M2
-#define ON3 41     // Pines para M2
-#define ON4 39     // Pines para M2
+#define IN1  53   // Pines para M1-1
+#define IN2  51   // Pines para M1-1
+#define IN3  49   // Pines para M1-1
+#define IN4  47   // Pines para M1-1
+
+#define IN5 52    // Pines para M1-2
+#define IN6 50    // Pines para M1-2
+#define IN7 48    // Pines para M1-2
+#define IN8 46    // Pines para M1-2
+
+#define ON1 45     // Pines para M2-1
+#define ON2 43     // Pines para M2-1
+#define ON3 41     // Pines para M2-1
+#define ON4 39     // Pines para M2-1
+
+#define ON5 44     // Pines para M2-2
+#define ON6 42     // Pines para M2-2
+#define ON7 40     // Pines para M2-2
+#define ON8 38     // Pines para M2-2
+
+#define LM35_PIN 2 // Pines para LM 35.
 
 // Defines para los DHT
 #include "DHT.h"  // Cargamos la libreria DHT
@@ -56,6 +69,7 @@ int V, ilum;
 
 void setup() {
   // Setup necesario para los motores
+  analogReference(INTERNAL1V1);
   Serial.begin(9600);
   comando.reserve(200);
   pinMode(IN1, OUTPUT);
@@ -104,7 +118,8 @@ void loop() {
   }
 
   else if (comando.equals("leerTempHum")) {
-    leerDHTs();
+    // leerDHTs();
+    leerLM();
     comando = "";
   }
 
@@ -120,6 +135,11 @@ void loop() {
 
   else if (comando.equals("fertilizar")){
     fertilizar();
+    comando = "";
+  }
+
+  else if (comando.equals("activalm")){
+    leerLM();
     comando = "";
   }
 }
@@ -267,3 +287,12 @@ void serialEvent(){
     }
   }
 }
+
+void leerLM(){
+  int input = analogRead(LM35_PIN);    // Obtengo el valor sensado por el LM35
+  float mv  = (1100 / 1024.0) * input; // Convierto el valor leido a mV (ahora el "tope" es de 1100mV)
+  float cel = mv / 10;                 // Convierto los mV leidos a grados celsius
+  Serial.println(cel);
+  delay(1000); 
+}
+
