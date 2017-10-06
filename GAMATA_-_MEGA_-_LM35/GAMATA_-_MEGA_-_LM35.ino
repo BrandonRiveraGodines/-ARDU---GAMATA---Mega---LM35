@@ -25,6 +25,7 @@
 #include "DHT.h"  // Cargamos la libreria DHT
 #define DHTPIN_1 37  // Pin para el sensor DHT22 #1
 // #define DHTPIN_2 35  // Pin para el sensor DHT22 #2
+// #define DHTPIN_3 33 //  Pin para el sensor DHT22 #3
 #define DHTTYPE DHT22 // SE selecciona el tipo de DHT (hay otros DHT)
 
 // Defines para la fotoresistencia
@@ -58,14 +59,16 @@ int Paso [ 8 ][ 4 ] = {
 };
 
 // Variables necesarias para el DHT
-DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Arduino para comunicarse con el sensor
-// DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor
+DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Arduino para comunicarse con el sensor.
+// DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor.
+// DHT dht_3(DHTPIN_3, DHTTYPE); // SE inicia otra variable que será usada por Arduino para comunicarse con el sensor.
 float temp, hum; // Se crean variables para obtener los datos.
 int c = 0, b = 0;
 
 // Variables necesarias para la resistencia foto.
-const int LDRPin = A1;
-int V, ilum;
+const int LDRPin = A0;
+const int LDRPin2 = A1;
+int V, ilum, ilum2;
 
 void setup() {
   // Setup necesario para los motores
@@ -95,8 +98,10 @@ void setup() {
   // Setup necesario para los sensores DHT22
   dht_1.begin(); // Se inicia el sensor (1).
   // dht_2.begin(); // Se inicia el sensor (2).
+  // dht_3.begin(); // Se inicia el sensor(3).
   pinMode(DHTPIN_1, OUTPUT);
   // pinMode(DHTPIN_2, OUTPUT);
+  // pinMode(DHTPIN_3, OUTPUT);
 
   // Setup necesario para el riego y la fertilizacion
   pinMode(AguaPIN, OUTPUT);
@@ -250,14 +255,19 @@ void setTempHum() {
 
 void leerDHTs() {
   float h1 = dht_1.readHumidity(); // Lee la humedad del primer sensor.
-  // float h2 = dht_2.readHumidity(); // Lee la humedad del segundo sensor
+  // float h2 = dht_2.readHumidity(); // Lee la humedad del segundo sensor.
+  // float h3 = dht_3.readHumidity(); // Lee la humedad del tercer sensor.
   float t1 = dht_1.readTemperature(); // Lee la temperatura del primer sensor.
   // float t2 = dht_2.readTemperature(); // Lee la temperatura del segundo sensor.
-  //float h = (h1 + h2) / 2;
-  //float t = (t1 + t2) / 2;
+  // float t3 = dht_3.readTemperature(); // Lee la temperatura del tercer sensor.
+  //float h = (h1 + h2 + h3) / 3;
+  //float t = (t1 + t2 + t3) / 3;
 
   Serial.println(t1);
   Serial.println(h1);
+
+  // Serial.println(h);
+  // Serial.println(t);
 
   if (t1 >= temp) {
     Direction = true;
@@ -282,6 +292,8 @@ void leerLums() {
   ilum = analogRead(LDRPin);
   Serial.println(ilum);
   delay(1000);
+  ilum2 = analogRead(LDRPin2);
+  ilum = (ilum + ilum2) / 2;
 }
 /*
    Terminan los codigos para luminocidad
@@ -306,7 +318,6 @@ void fertilizar() {
 /*
    Terminan los codigos de rogar y fertilizar.
 */
-
 
 void serialEvent() {
   while (Serial.available()) {
