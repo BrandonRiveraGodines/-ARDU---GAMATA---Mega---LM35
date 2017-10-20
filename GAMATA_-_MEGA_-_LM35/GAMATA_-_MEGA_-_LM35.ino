@@ -57,6 +57,39 @@ int Paso [ 8 ][ 4 ] = {
   {0, 0, 0, 1},
   {1, 0, 0, 1}
 };
+int Paso2 [ 8 ][ 4 ] =
+{ {1, 0, 0, 0},
+  {1, 1, 0, 0},
+  {0, 1, 0, 0},
+  {0, 1, 1, 0},
+  {0, 0, 1, 0},
+  {0, 0, 1, 1},
+  {0, 0, 0, 1},
+  {1, 0, 0, 1}
+};
+
+int Paso3 [ 8 ][ 4 ] =
+{ {1, 0, 0, 0},
+  {1, 1, 0, 0},
+  {0, 1, 0, 0},
+  {0, 1, 1, 0},
+  {0, 0, 1, 0},
+  {0, 0, 1, 1},
+  {0, 0, 0, 1},
+  {1, 0, 0, 1}
+};
+
+int Paso4 [ 8 ][ 4 ] =
+{ {1, 0, 0, 0},
+  {1, 1, 0, 0},
+  {0, 1, 0, 0},
+  {0, 1, 1, 0},
+  {0, 0, 1, 0},
+  {0, 0, 1, 1},
+  {0, 0, 0, 1},
+  {1, 0, 0, 1}
+};
+
 
 // Variables necesarias para el DHT
 DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Arduino para comunicarse con el sensor.
@@ -169,9 +202,9 @@ void motores() {
   for (int a = 0; a < 4; a++) {
     while (steps_left > 0) {
       stepper();    // Avanza un paso   // VERDE
-      stepper2();
-      stepper3();       // AMARILLO<
-      stepper4();     // AZUL
+      //stepper2();       // gris
+      //stepper3();       // AMARILLO<
+      //stepper4();     // NARANJA
       steps_left-- ;  // Un paso menos
       delay (1) ;
     }
@@ -185,6 +218,18 @@ void stepper() {
   digitalWrite( IN2, Paso[Steps][ 1] );
   digitalWrite( IN3, Paso[Steps][ 2] );
   digitalWrite( IN4, Paso[Steps][ 3] );
+  digitalWrite( IN5, Paso[Steps][ 0] );
+  digitalWrite( IN6, Paso[Steps][ 1] );
+  digitalWrite( IN7, Paso[Steps][ 2] );
+  digitalWrite( IN8, Paso[Steps][ 3] );
+  digitalWrite( ON1, Paso4[Steps][ 0] );
+  digitalWrite( ON2, Paso4[Steps][ 1] );
+  digitalWrite( ON3, Paso4[Steps][ 2] );
+  digitalWrite( ON4, Paso4[Steps][ 3] );
+  digitalWrite( ON5, Paso4[Steps][ 0] );
+  digitalWrite( ON6, Paso4[Steps][ 1] );
+  digitalWrite( ON7, Paso4[Steps][ 2] );
+  digitalWrite( ON8, Paso4[Steps][ 3] );
   SetDirection();
 }
 
@@ -319,7 +364,7 @@ void fertilizar() {
    Terminan los codigos de rogar y fertilizar.
 */
 /*
-void serialEvent() {
+  void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
     if (inChar == '\r') continue;
@@ -329,7 +374,7 @@ void serialEvent() {
       comando += inChar;
     }
   }
-}
+  }
 */
 
 void leerLM() {
