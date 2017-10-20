@@ -1,20 +1,20 @@
 // Defines para los motores.
-#define IN1  53   // Pines para M1-1
+#define IN1  53   // Pines para M1-1        MOTOR CABLES VERDES 
 #define IN2  51   // Pines para M1-1
 #define IN3  49   // Pines para M1-1
 #define IN4  47   // Pines para M1-1
 
-#define IN5 52    // Pines para M1-2
+#define IN5 52    // Pines para M1-2        MOTOR CABLES AMARILLO
 #define IN6 50    // Pines para M1-2
 #define IN7 48    // Pines para M1-2
 #define IN8 46    // Pines para M1-2
 
-#define ON1 45     // Pines para M2-1
+#define ON1 45     // Pines para M2-1       MOTOR CABLES GRIS
 #define ON2 43     // Pines para M2-1
 #define ON3 41     // Pines para M2-1
 #define ON4 39     // Pines para M2-1
 
-#define ON5 44     // Pines para M2-2
+#define ON5 44     // Pines para M2-2       MOTOR CABLES NARANJA
 #define ON6 42     // Pines para M2-2
 #define ON7 40     // Pines para M2-2
 #define ON8 38     // Pines para M2-2
@@ -24,7 +24,7 @@
 // Defines para los DHT
 #include "DHT.h"  // Cargamos la libreria DHT
 #define DHTPIN_1 37  // Pin para el sensor DHT22 #1
-// #define DHTPIN_2 35  // Pin para el sensor DHT22 #2
+#define DHTPIN_2 35  // Pin para el sensor DHT22 #2
 // #define DHTPIN_3 33 //  Pin para el sensor DHT22 #3
 #define DHTTYPE DHT22 // SE selecciona el tipo de DHT (hay otros DHT)
 
@@ -37,7 +37,7 @@
 #define AguaPIN 33 // Pin para el riego del agua
 #define FertPIN 31 // PIN para el riego del agua
 
-String comando = "subir";
+String comando = "bajar";
 boolean stringComplete = false;
 
 // Variables necesarias para el motor.
@@ -60,7 +60,7 @@ int Paso [ 8 ][ 4 ] = {
 
 // Variables necesarias para el DHT
 DHT dht_1(DHTPIN_1, DHTTYPE); // Se inicia una variable que será usada por Arduino para comunicarse con el sensor.
-// DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor.
+DHT dht_2(DHTPIN_2, DHTTYPE); // Se inicia otra variable que será usada por Arduino para comunicarse con el sensor.
 // DHT dht_3(DHTPIN_3, DHTTYPE); // SE inicia otra variable que será usada por Arduino para comunicarse con el sensor.
 float temp, hum; // Se crean variables para obtener los datos.
 int c = 0, b = 0;
@@ -72,7 +72,7 @@ int V, ilum, ilum2;
 
 void setup() {
   // Setup necesario para los motores
-  analogReference(INTERNAL1V1);
+  // analogReference(INTERNAL1V1);
   Serial.begin(9600);
   comando.reserve(200);
   pinMode(IN1, OUTPUT);
@@ -97,10 +97,10 @@ void setup() {
 
   // Setup necesario para los sensores DHT22
   dht_1.begin(); // Se inicia el sensor (1).
-  // dht_2.begin(); // Se inicia el sensor (2).
+  dht_2.begin(); // Se inicia el sensor (2).
   // dht_3.begin(); // Se inicia el sensor(3).
   pinMode(DHTPIN_1, OUTPUT);
-  // pinMode(DHTPIN_2, OUTPUT);
+  pinMode(DHTPIN_2, OUTPUT);
   // pinMode(DHTPIN_3, OUTPUT);
 
   // Setup necesario para el riego y la fertilizacion
@@ -114,7 +114,7 @@ void setup() {
 
 void loop() {
   // leerDHTs();
-  if (stringComplete) {
+  if (!stringComplete) {
     if (comando.equals("subir")) {
       Direction = false;
       Direction2 = true;
@@ -126,7 +126,7 @@ void loop() {
       Direction = true;
       Direction2 = false;
       motores();
-      comando = "";
+      //comando = "";
     }
 
     else if (comando.equals("setear")) {
@@ -135,8 +135,8 @@ void loop() {
     }
 
     else if (comando.equals("leerTempHum")) {
-      // leerDHTs();
-      leerLM();
+      leerDHTs();
+      // leerLM();
       comando = "";
     }
 
@@ -168,10 +168,10 @@ void loop() {
 void motores() {
   for (int a = 0; a < 4; a++) {
     while (steps_left > 0) {
-      stepper();    // Avanza un paso
+      stepper();    // Avanza un paso   // VERDE
       stepper2();
-      stepper3();
-      stepper4();
+      stepper3();       // AMARILLO<
+      stepper4();     // AZUL
       steps_left-- ;  // Un paso menos
       delay (1) ;
     }
@@ -201,7 +201,7 @@ void stepper3() {
   digitalWrite( IN6, Paso[Steps][ 1] );
   digitalWrite( IN7, Paso[Steps][ 2] );
   digitalWrite( IN8, Paso[Steps][ 3] );
-  SetDirection2();
+  SetDirection();
 }
 
 void stepper4() {
@@ -318,7 +318,7 @@ void fertilizar() {
 /*
    Terminan los codigos de rogar y fertilizar.
 */
-
+/*
 void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
@@ -330,6 +330,7 @@ void serialEvent() {
     }
   }
 }
+*/
 
 void leerLM() {
   int input = analogRead(LM35_PIN);    // Obtengo el valor sensado por el LM35
