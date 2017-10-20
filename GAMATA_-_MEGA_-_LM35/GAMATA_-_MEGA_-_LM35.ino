@@ -3,22 +3,18 @@
 #define IN2  51   // Pines para M1-1
 #define IN3  49   // Pines para M1-1
 #define IN4  47   // Pines para M1-1
-
 #define IN5 52    // Pines para M1-2        MOTOR CABLES AMARILLO
 #define IN6 50    // Pines para M1-2
 #define IN7 48    // Pines para M1-2
 #define IN8 46    // Pines para M1-2
-
 #define ON1 45     // Pines para M2-1       MOTOR CABLES GRIS
 #define ON2 43     // Pines para M2-1
 #define ON3 41     // Pines para M2-1
 #define ON4 39     // Pines para M2-1
-
 #define ON5 44     // Pines para M2-2       MOTOR CABLES NARANJA
 #define ON6 42     // Pines para M2-2
 #define ON7 40     // Pines para M2-2
 #define ON8 38     // Pines para M2-2
-
 #define LM35_PIN 2 // Pines para LM 35.
 
 // Defines para los DHT
@@ -37,7 +33,7 @@
 #define AguaPIN 33 // Pin para el riego del agua
 #define FertPIN 31 // PIN para el riego del agua
 
-String comando = "bajar";
+String comando = "leerTempHum";
 boolean stringComplete = false;
 
 // Variables necesarias para el motor.
@@ -99,8 +95,8 @@ float temp, hum; // Se crean variables para obtener los datos.
 int c = 0, b = 0;
 
 // Variables necesarias para la resistencia foto.
-const int LDRPin = A0;
-const int LDRPin2 = A1;
+const int LDRPin = 0;
+const int LDRPin2 = 1;
 int V, ilum, ilum2;
 
 void setup() {
@@ -139,6 +135,7 @@ void setup() {
   // Setup necesario para el riego y la fertilizacion
   pinMode(AguaPIN, OUTPUT);
   pinMode(FertPIN, OUTPUT);
+  
 
   //Establecer la temperatura máxima
   // setTempHum();
@@ -147,19 +144,21 @@ void setup() {
 
 void loop() {
   // leerDHTs();
+  digitalWrite(AguaPIN,HIGH);
+  digitalWrite(FertPIN,HIGH);
   if (!stringComplete) {
     if (comando.equals("subir")) {
       Direction = false;
-      Direction2 = true;
+      Direction2 = false;
       motores();
       comando = "";
     }
 
     else if (comando.equals("bajar")) {
       Direction = true;
-      Direction2 = false;
+      Direction2 = true;
       motores();
-      //comando = "";
+      comando = "";
     }
 
     else if (comando.equals("setear")) {
@@ -170,7 +169,7 @@ void loop() {
     else if (comando.equals("leerTempHum")) {
       leerDHTs();
       // leerLM();
-      comando = "";
+      //comando = "";
     }
 
     else if (comando.equals("getLums")) {
@@ -179,7 +178,11 @@ void loop() {
     }
 
     else if (comando.equals("regar")) {
-      regar();
+      // regar();
+      digitalWrite(AguaPIN, LOW);
+      delay(4000);
+      digitalWrite(AguaPIN, HIGH);
+      delay(200);
       comando = "";
     }
 
@@ -192,40 +195,41 @@ void loop() {
       leerLM();
       comando = "";
     }
-    leerLM();
+    //leerLM();
   }
 }
 /*
     Inicia el codigo para el motor
 */
 void motores() {
-  for (int a = 0; a < 4; a++) {
+  for (int a = 0; a < 3; a++) {
     while (steps_left > 0) {
       stepper();    // Avanza un paso   // VERDE
-      //stepper2();       // gris
+      stepper2();       // gris
       //stepper3();       // AMARILLO<
       //stepper4();     // NARANJA
       steps_left-- ;  // Un paso menos
       delay (1) ;
     }
-    steps_left = 4095;
+    // steps_left = 4095;
+    steps_left = 2500;
   }
-  delay(2000);
+  delay(4000);
 }
 
 void stepper() {
-  digitalWrite( IN1, Paso[Steps][ 0] );
+  /*digitalWrite( IN1, Paso[Steps][ 0] );
   digitalWrite( IN2, Paso[Steps][ 1] );
   digitalWrite( IN3, Paso[Steps][ 2] );
-  digitalWrite( IN4, Paso[Steps][ 3] );
-  digitalWrite( IN5, Paso[Steps][ 0] );
-  digitalWrite( IN6, Paso[Steps][ 1] );
-  digitalWrite( IN7, Paso[Steps][ 2] );
-  digitalWrite( IN8, Paso[Steps][ 3] );
-  digitalWrite( ON1, Paso4[Steps][ 0] );
-  digitalWrite( ON2, Paso4[Steps][ 1] );
-  digitalWrite( ON3, Paso4[Steps][ 2] );
-  digitalWrite( ON4, Paso4[Steps][ 3] );
+  digitalWrite( IN4, Paso[Steps][ 3] ); */
+  digitalWrite( IN5, Paso2[Steps][ 0] );
+  digitalWrite( IN6, Paso2[Steps][ 1] );
+  digitalWrite( IN7, Paso2[Steps][ 2] );
+  digitalWrite( IN8, Paso2[Steps][ 3] );
+  digitalWrite( ON1, Paso3[Steps][ 0] );
+  digitalWrite( ON2, Paso3[Steps][ 1] );
+  digitalWrite( ON3, Paso3[Steps][ 2] );
+  digitalWrite( ON4, Paso3[Steps][ 3] );
   digitalWrite( ON5, Paso4[Steps][ 0] );
   digitalWrite( ON6, Paso4[Steps][ 1] );
   digitalWrite( ON7, Paso4[Steps][ 2] );
@@ -234,26 +238,11 @@ void stepper() {
 }
 
 void stepper2() {
-  digitalWrite( ON1, Paso[Steps2][ 0] );
-  digitalWrite( ON2, Paso[Steps2][ 1] );
-  digitalWrite( ON3, Paso[Steps2][ 2] );
-  digitalWrite( ON4, Paso[Steps2][ 3] );
-  SetDirection2();
-}
-
-void stepper3() {
-  digitalWrite( IN5, Paso[Steps][ 0] );
-  digitalWrite( IN6, Paso[Steps][ 1] );
-  digitalWrite( IN7, Paso[Steps][ 2] );
-  digitalWrite( IN8, Paso[Steps][ 3] );
-  SetDirection();
-}
-
-void stepper4() {
-  digitalWrite( ON5, Paso[Steps2][ 0] );
-  digitalWrite( ON6, Paso[Steps2][ 1] );
-  digitalWrite( ON7, Paso[Steps2][ 2] );
-  digitalWrite( ON8, Paso[Steps2][ 3] );
+  //Direction2 = false;
+  digitalWrite( IN1, Paso[Steps2][ 0] );
+  digitalWrite( IN2, Paso[Steps2][ 1] );
+  digitalWrite( IN3, Paso[Steps2][ 2] );
+  digitalWrite( IN4, Paso[Steps2][ 3] );
   SetDirection2();
 }
 
@@ -299,21 +288,22 @@ void setTempHum() {
 }
 
 void leerDHTs() {
-  float h1 = dht_1.readHumidity(); // Lee la humedad del primer sensor.
+  float h = dht_1.readHumidity(); // Lee la humedad del primer sensor.
   // float h2 = dht_2.readHumidity(); // Lee la humedad del segundo sensor.
   // float h3 = dht_3.readHumidity(); // Lee la humedad del tercer sensor.
-  float t1 = dht_1.readTemperature(); // Lee la temperatura del primer sensor.
+  float t = dht_1.readTemperature(); // Lee la temperatura del primer sensor.
   // float t2 = dht_2.readTemperature(); // Lee la temperatura del segundo sensor.
   // float t3 = dht_3.readTemperature(); // Lee la temperatura del tercer sensor.
   //float h = (h1 + h2 + h3) / 3;
   //float t = (t1 + t2 + t3) / 3;
 
-  Serial.println(t1);
-  Serial.println(h1);
+  Serial.println(t);
+  Serial.println(h);
+  Serial.println("CACA");
 
   // Serial.println(h);
   // Serial.println(t);
-
+/*
   if (t1 >= temp) {
     Direction = true;
     Direction2 = false;
@@ -324,6 +314,7 @@ void leerDHTs() {
     Direction2 = true;
     motores();
   }
+*/
 }
 /*
    Terminan los codigos de DHT22
@@ -337,8 +328,8 @@ void leerLums() {
   ilum = analogRead(LDRPin);
   Serial.println(ilum);
   delay(1000);
-  ilum2 = analogRead(LDRPin2);
-  ilum = (ilum + ilum2) / 2;
+  //ilum2 = analogRead(LDRPin2);
+  //ilum = (ilum + ilum2) / 2;
 }
 /*
    Terminan los codigos para luminocidad
@@ -348,16 +339,18 @@ void leerLums() {
    Comienzan los codigos para regar y fertilizar.
 */
 void regar() {
+  /*
   digitalWrite(AguaPIN, HIGH);
   delay(4000);
   digitalWrite(AguaPIN, LOW);
   delay(200);
+  */
 }
 
 void fertilizar() {
-  digitalWrite(FertPIN, HIGH);
-  delay(4000);
   digitalWrite(FertPIN, LOW);
+  delay(4000);
+  digitalWrite(FertPIN, HIGH);
   delay(200);
 }
 /*
