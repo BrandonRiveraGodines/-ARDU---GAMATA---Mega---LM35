@@ -1,3 +1,6 @@
+// Realizado por y para GAMATA.
+// Está tan completo que es solo comentar y descomentar lineas. Un saludo para la raza que la sigue cotorreando.
+
 // Defines para los motores.
 #define IN1  53   // Pines para M1-1        MOTOR CABLES VERDES 
 #define IN2  51   // Pines para M1-1
