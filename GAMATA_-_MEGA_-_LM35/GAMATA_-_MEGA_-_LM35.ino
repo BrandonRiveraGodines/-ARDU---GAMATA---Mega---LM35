@@ -36,7 +36,7 @@
 #define AguaPIN 33 // Pin para el riego del agua
 #define FertPIN 31 // PIN para el riego del agua
 
-String comando = "leerTempHum";
+String comando;
 boolean stringComplete = false;
 
 // Variables necesarias para el motor.
@@ -138,7 +138,9 @@ void setup() {
   // Setup necesario para el riego y la fertilizacion
   pinMode(AguaPIN, OUTPUT);
   pinMode(FertPIN, OUTPUT);
-  
+
+  comando.reserve(200);
+
 
   //Establecer la temperatura máxima
   // setTempHum();
@@ -147,18 +149,19 @@ void setup() {
 
 void loop() {
   // leerDHTs();
+  comandos();
   digitalWrite(AguaPIN,HIGH);
   digitalWrite(FertPIN,HIGH);
   if (!stringComplete) {
     if (comando.equals("subir")) {
-      Direction = false;
+      Direction = true;
       Direction2 = false;
       motores();
       comando = "";
     }
 
     else if (comando.equals("bajar")) {
-      Direction = true;
+      Direction = false;
       Direction2 = true;
       motores();
       comando = "";
@@ -186,12 +189,12 @@ void loop() {
       delay(4000);
       digitalWrite(AguaPIN, HIGH);
       delay(200);
-      comando = "";
+      //comando = "";
     }
 
     else if (comando.equals("fertilizar")) {
       fertilizar();
-      comando = "";
+      //comando = "";
     }
 
     else if (comando.equals("activalm")) {
@@ -380,4 +383,10 @@ void leerLM() {
   Serial.println(cel);
   delay(1000);
 }
+
+void comandos(){
+  Serial.println("Dame un comando de caca");
+  comando = Serial.readString();
+}
+
 
