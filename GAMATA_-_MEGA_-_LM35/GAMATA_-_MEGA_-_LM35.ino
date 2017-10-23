@@ -224,31 +224,28 @@ void motores() {
 }
 
 void stepper() {
-  /*digitalWrite( IN1, Paso[Steps][ 0] );
-  digitalWrite( IN2, Paso[Steps][ 1] );
-  digitalWrite( IN3, Paso[Steps][ 2] );
-  digitalWrite( IN4, Paso[Steps][ 3] ); */
   digitalWrite( IN5, Paso2[Steps][ 0] );
   digitalWrite( IN6, Paso2[Steps][ 1] );
   digitalWrite( IN7, Paso2[Steps][ 2] );
   digitalWrite( IN8, Paso2[Steps][ 3] );
-  digitalWrite( ON1, Paso3[Steps][ 0] );
-  digitalWrite( ON2, Paso3[Steps][ 1] );
-  digitalWrite( ON3, Paso3[Steps][ 2] );
-  digitalWrite( ON4, Paso3[Steps][ 3] );
   digitalWrite( ON5, Paso4[Steps][ 0] );
   digitalWrite( ON6, Paso4[Steps][ 1] );
   digitalWrite( ON7, Paso4[Steps][ 2] );
   digitalWrite( ON8, Paso4[Steps][ 3] );
+  
   SetDirection();
 }
 
 void stepper2() {
-  //Direction2 = false;
+  digitalWrite( ON1, Paso3[Steps][ 0] );
+  digitalWrite( ON2, Paso3[Steps][ 1] );
+  digitalWrite( ON3, Paso3[Steps][ 2] );
+  digitalWrite( ON4, Paso3[Steps][ 3] );
   digitalWrite( IN1, Paso[Steps2][ 0] );
   digitalWrite( IN2, Paso[Steps2][ 1] );
   digitalWrite( IN3, Paso[Steps2][ 2] );
   digitalWrite( IN4, Paso[Steps2][ 3] );
+  
   SetDirection2();
 }
 
