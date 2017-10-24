@@ -104,7 +104,7 @@ int V, ilum, ilum2;
 
 void setup() {
   // Setup necesario para los motores
-  // analogReference(INTERNAL1V1);
+  analogReference(INTERNAL1V1);
   Serial.begin(9600);
   comando.reserve(200);
   pinMode(IN1, OUTPUT);
@@ -150,9 +150,9 @@ void setup() {
 void loop() {
   // leerDHTs();
   comandos();
-  digitalWrite(AguaPIN,HIGH);
-  digitalWrite(FertPIN,HIGH);
-  if (!stringComplete) {
+  digitalWrite(AguaPIN, HIGH);
+  digitalWrite(FertPIN, HIGH);
+  if (stringComplete) {
     if (comando.equals("subir")) {
       Direction = true;
       Direction2 = false;
@@ -232,7 +232,7 @@ void stepper() {
   digitalWrite( ON6, Paso4[Steps][ 1] );
   digitalWrite( ON7, Paso4[Steps][ 2] );
   digitalWrite( ON8, Paso4[Steps][ 3] );
-  
+
   SetDirection();
 }
 
@@ -245,7 +245,7 @@ void stepper2() {
   digitalWrite( IN2, Paso[Steps2][ 1] );
   digitalWrite( IN3, Paso[Steps2][ 2] );
   digitalWrite( IN4, Paso[Steps2][ 3] );
-  
+
   SetDirection2();
 }
 
@@ -306,18 +306,18 @@ void leerDHTs() {
 
   // Serial.println(h);
   // Serial.println(t);
-/*
-  if (t1 >= temp) {
-    Direction = true;
-    Direction2 = false;
-    motores();
-  }
-  if (t1 < temp) {
-    Direction = false;
-    Direction2 = true;
-    motores();
-  }
-*/
+  /*
+    if (t1 >= temp) {
+      Direction = true;
+      Direction2 = false;
+      motores();
+    }
+    if (t1 < temp) {
+      Direction = false;
+      Direction2 = true;
+      motores();
+    }
+  */
 }
 /*
    Terminan los codigos de DHT22
@@ -343,10 +343,10 @@ void leerLums() {
 */
 void regar() {
   /*
-  digitalWrite(AguaPIN, HIGH);
-  delay(4000);
-  digitalWrite(AguaPIN, LOW);
-  delay(200);
+    digitalWrite(AguaPIN, HIGH);
+    delay(4000);
+    digitalWrite(AguaPIN, LOW);
+    delay(200);
   */
 }
 
@@ -359,8 +359,8 @@ void fertilizar() {
 /*
    Terminan los codigos de rogar y fertilizar.
 */
-/*
-  void serialEvent() {
+
+void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
     if (inChar == '\r') continue;
@@ -370,8 +370,8 @@ void fertilizar() {
       comando += inChar;
     }
   }
-  }
-*/
+}
+
 
 void leerLM() {
   int input = analogRead(LM35_PIN);    // Obtengo el valor sensado por el LM35
@@ -381,7 +381,7 @@ void leerLM() {
   delay(1000);
 }
 
-void comandos(){
+void comandos() {
   Serial.println("Dame un comando de caca");
   comando = Serial.readString();
 }
