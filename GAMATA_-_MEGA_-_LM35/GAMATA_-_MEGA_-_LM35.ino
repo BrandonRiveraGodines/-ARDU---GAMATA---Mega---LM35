@@ -152,7 +152,7 @@ void loop() {
   comandos();
   digitalWrite(AguaPIN, HIGH);
   digitalWrite(FertPIN, HIGH);
-  if (stringComplete) {
+  if (!stringComplete) {
     if (comando.equals("subir")) {
       Direction = true;
       Direction2 = false;
@@ -160,10 +160,24 @@ void loop() {
       comando = "";
     }
 
+    if (comando.equals("subirm")) {
+      Direction = true;
+      Direction2 = false;
+      motores2();
+      comando = "";
+    }
+
     else if (comando.equals("bajar")) {
       Direction = false;
       Direction2 = true;
       motores();
+      comando = "";
+    }
+
+    else if (comando.equals("bajarm")) {
+      Direction = false;
+      Direction2 = true;
+      motores2();
       comando = "";
     }
 
@@ -223,6 +237,22 @@ void motores() {
   delay(4000);
 }
 
+void motores2() {
+  for (int a = 0; a < 3; a++) {
+    while (steps_left > 0) {
+      stepper3();    // Avanza un paso   // VERDE
+      stepper4();       // gris
+      //stepper3();       // AMARILLO<
+      //stepper4();     // NARANJA
+      steps_left-- ;  // Un paso menos
+      delay (1) ;
+    }
+    // steps_left = 4095;
+    steps_left = 2500;
+  }
+  delay(4000);
+}
+
 void stepper() {
   digitalWrite( IN5, Paso2[Steps][ 0] );
   digitalWrite( IN6, Paso2[Steps][ 1] );
@@ -232,7 +262,6 @@ void stepper() {
   digitalWrite( ON6, Paso4[Steps][ 1] );
   digitalWrite( ON7, Paso4[Steps][ 2] );
   digitalWrite( ON8, Paso4[Steps][ 3] );
-
   SetDirection();
 }
 
@@ -245,7 +274,30 @@ void stepper2() {
   digitalWrite( IN2, Paso[Steps2][ 1] );
   digitalWrite( IN3, Paso[Steps2][ 2] );
   digitalWrite( IN4, Paso[Steps2][ 3] );
+  SetDirection2();
+}
 
+void stepper3() {
+  digitalWrite( IN5, Paso2[Steps][ 0] );
+  digitalWrite( IN6, Paso2[Steps][ 1] );
+  digitalWrite( IN7, Paso2[Steps][ 2] );
+  digitalWrite( IN8, Paso2[Steps][ 3] );
+  digitalWrite( ON5, Paso4[Steps][ 0] );
+  digitalWrite( ON6, Paso4[Steps][ 1] );
+  digitalWrite( ON7, Paso4[Steps][ 2] );
+  digitalWrite( ON8, Paso4[Steps][ 3] );
+  SetDirection();
+}
+
+void stepper4() {
+  digitalWrite( ON1, Paso3[Steps][ 0] );
+  digitalWrite( ON2, Paso3[Steps][ 1] );
+  digitalWrite( ON3, Paso3[Steps][ 2] );
+  digitalWrite( ON4, Paso3[Steps][ 3] );
+  digitalWrite( IN1, Paso[Steps2][ 0] );
+  digitalWrite( IN2, Paso[Steps2][ 1] );
+  digitalWrite( IN3, Paso[Steps2][ 2] );
+  digitalWrite( IN4, Paso[Steps2][ 3] );
   SetDirection2();
 }
 
@@ -359,7 +411,7 @@ void fertilizar() {
 /*
    Terminan los codigos de rogar y fertilizar.
 */
-
+/*
 void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
@@ -371,7 +423,7 @@ void serialEvent() {
     }
   }
 }
-
+*/
 
 void leerLM() {
   int input = analogRead(LM35_PIN);    // Obtengo el valor sensado por el LM35
