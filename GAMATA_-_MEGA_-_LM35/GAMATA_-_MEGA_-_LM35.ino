@@ -254,10 +254,10 @@ void motores2() {
 }
 
 void stepper() {
-  digitalWrite( IN5, Paso2[Steps][ 0] );
-  digitalWrite( IN6, Paso2[Steps][ 1] );
-  digitalWrite( IN7, Paso2[Steps][ 2] );
-  digitalWrite( IN8, Paso2[Steps][ 3] );
+  //digitalWrite( IN5, Paso2[Steps][ 0] );
+  //digitalWrite( IN6, Paso2[Steps][ 1] );
+  //digitalWrite( IN7, Paso2[Steps][ 2] );
+  //digitalWrite( IN8, Paso2[Steps][ 3] );
   digitalWrite( ON5, Paso4[Steps][ 0] );
   digitalWrite( ON6, Paso4[Steps][ 1] );
   digitalWrite( ON7, Paso4[Steps][ 2] );
@@ -266,10 +266,10 @@ void stepper() {
 }
 
 void stepper2() {
-  digitalWrite( ON1, Paso3[Steps][ 0] );
-  digitalWrite( ON2, Paso3[Steps][ 1] );
-  digitalWrite( ON3, Paso3[Steps][ 2] );
-  digitalWrite( ON4, Paso3[Steps][ 3] );
+  //digitalWrite( ON1, Paso3[Steps][ 0] );
+  //digitalWrite( ON2, Paso3[Steps][ 1] );
+  //digitalWrite( ON3, Paso3[Steps][ 2] );
+  //digitalWrite( ON4, Paso3[Steps][ 3] );
   digitalWrite( IN1, Paso[Steps2][ 0] );
   digitalWrite( IN2, Paso[Steps2][ 1] );
   digitalWrite( IN3, Paso[Steps2][ 2] );
@@ -282,10 +282,10 @@ void stepper3() {
   digitalWrite( IN6, Paso2[Steps][ 1] );
   digitalWrite( IN7, Paso2[Steps][ 2] );
   digitalWrite( IN8, Paso2[Steps][ 3] );
-  digitalWrite( ON5, Paso4[Steps][ 0] );
-  digitalWrite( ON6, Paso4[Steps][ 1] );
-  digitalWrite( ON7, Paso4[Steps][ 2] );
-  digitalWrite( ON8, Paso4[Steps][ 3] );
+  //digitalWrite( ON5, Paso4[Steps][ 0] );
+  //digitalWrite( ON6, Paso4[Steps][ 1] );
+  //digitalWrite( ON7, Paso4[Steps][ 2] );
+  //digitalWrite( ON8, Paso4[Steps][ 3] );
   SetDirection();
 }
 
@@ -294,10 +294,10 @@ void stepper4() {
   digitalWrite( ON2, Paso3[Steps][ 1] );
   digitalWrite( ON3, Paso3[Steps][ 2] );
   digitalWrite( ON4, Paso3[Steps][ 3] );
-  digitalWrite( IN1, Paso[Steps2][ 0] );
-  digitalWrite( IN2, Paso[Steps2][ 1] );
-  digitalWrite( IN3, Paso[Steps2][ 2] );
-  digitalWrite( IN4, Paso[Steps2][ 3] );
+  //digitalWrite( IN1, Paso[Steps2][ 0] );
+  //digitalWrite( IN2, Paso[Steps2][ 1] );
+  //digitalWrite( IN3, Paso[Steps2][ 2] );
+  //digitalWrite( IN4, Paso[Steps2][ 3] );
   SetDirection2();
 }
 
@@ -434,7 +434,7 @@ void leerLM() {
 }
 
 void comandos() {
-  Serial.println("Dame un comando de caca");
+  Serial.println("Dame un comando");
   comando = Serial.readString();
 }
 
