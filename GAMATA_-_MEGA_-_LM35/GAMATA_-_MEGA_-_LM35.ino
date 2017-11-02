@@ -144,15 +144,15 @@ void setup() {
 
   //Establecer la temperatura máxima
   // setTempHum();
-  temp = 30;
+  //temp = 30;
 }
 
 void loop() {
   // leerDHTs();
-  comandos();
+  // comandos();
   digitalWrite(AguaPIN, HIGH);
   digitalWrite(FertPIN, HIGH);
-  if (!stringComplete) {
+  if (stringComplete) {
     if (comando.equals("subir")) {
       Direction = true;
       Direction2 = false;
@@ -411,7 +411,7 @@ void fertilizar() {
 /*
    Terminan los codigos de rogar y fertilizar.
 */
-/*
+
 void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
@@ -423,7 +423,7 @@ void serialEvent() {
     }
   }
 }
-*/
+
 
 void leerLM() {
   int input = analogRead(LM35_PIN);    // Obtengo el valor sensado por el LM35
