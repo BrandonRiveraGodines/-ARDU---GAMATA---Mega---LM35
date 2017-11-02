@@ -152,12 +152,13 @@ void loop() {
   // comandos();
   digitalWrite(AguaPIN, HIGH);
   digitalWrite(FertPIN, HIGH);
-  if (stringComplete) {
+  if (!stringComplete) {
     if (comando.equals("subir")) {
       Direction = true;
       Direction2 = false;
       motores();
       comando = "";
+      estado_cortinas = "1";
     }
 
     if (comando.equals("subirm")) {
@@ -165,6 +166,7 @@ void loop() {
       Direction2 = false;
       motores2();
       comando = "";
+      estado_maya = "1";
     }
 
     else if (comando.equals("bajar")) {
@@ -172,6 +174,7 @@ void loop() {
       Direction2 = true;
       motores();
       comando = "";
+      estado_cortinas = "0";
     }
 
     else if (comando.equals("bajarm")) {
@@ -179,6 +182,7 @@ void loop() {
       Direction2 = true;
       motores2();
       comando = "";
+      estado_maya = "0";
     }
 
     else if (comando.equals("setear")) {
@@ -189,7 +193,7 @@ void loop() {
     else if (comando.equals("leerTempHum")) {
       leerDHTs();
       // leerLM();
-      //comando = "";
+      comando = "";
     }
 
     else if (comando.equals("getLums")) {
@@ -203,12 +207,12 @@ void loop() {
       delay(4000);
       digitalWrite(AguaPIN, HIGH);
       delay(200);
-      //comando = "";
+      comando = "";
     }
 
     else if (comando.equals("fertilizar")) {
       fertilizar();
-      //comando = "";
+      comando = "";
     }
 
     else if (comando.equals("activalm")) {
@@ -411,7 +415,7 @@ void fertilizar() {
 /*
    Terminan los codigos de rogar y fertilizar.
 */
-
+/*
 void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
@@ -423,7 +427,7 @@ void serialEvent() {
     }
   }
 }
-
+*/
 
 void leerLM() {
   int input = analogRead(LM35_PIN);    // Obtengo el valor sensado por el LM35
